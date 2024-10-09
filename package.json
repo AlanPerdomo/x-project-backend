@@ -26,7 +26,7 @@
   "homepage": "https://github.com/AlanPerdomo/x-project-backend#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.21.0",
+    "express": "^4.21.1",
     "pg": "^8.13.0",
     "prettier": "^3.3.3"
   }
