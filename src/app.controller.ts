@@ -8,11 +8,5 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
-  }
-
-  @Get("/ola:nome")
-  getObject(): any {
-    return this.appService.getHello1();
-    
-  }
+  } 
 }

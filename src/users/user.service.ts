@@ -12,4 +12,10 @@ export class UserService {
     async listar(): Promise<User[]> {
         return await this.userRepository.find();
     }
-}
+
+    async cadastrar(): Promise<User> {
+        return await this.userRepository.save({
+            name: "teste",
+            email: "teste",   
+        });
+}}
