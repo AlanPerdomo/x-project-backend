@@ -14,15 +14,7 @@ export class UserController {
     }
 
     @Post('cadastrar')
-    async criar(@Body() data: UserCreateDto): Promise<ResultDto> {
-        let user = new User();
-        user.name = data.name;
-        user.email = data.email;
-        await this.userService.cadastrar();
-
-        return <ResultDto>{
-            status: true,
-            message: "Salvo com sucesso"
-        }
+    async cadastrar(@Body() data: UserCreateDto): Promise<ResultDto> {
+        return this.userService.cadastrar(data);
     }
 }

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Perola } from "src/perolas/perola.entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 @Entity()
 export class User {
@@ -10,4 +11,7 @@ export class User {
 
     @Column({length: 100})
     email: string;
+
+    @OneToMany(() => Perola, perola => perola.user)
+    perolas: Perola[]
 }
