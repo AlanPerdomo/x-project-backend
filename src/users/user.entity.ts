@@ -12,6 +12,12 @@ export class User {
     @Column({length: 100})
     email: string;
 
+    @Column({length: 100})
+    password: string = null;
+
+    @Column({length: 100})
+    type: string;
+
     @OneToMany(() => Perola, perola => perola.user)
     perolas: Perola[]
 }

@@ -18,6 +18,8 @@ export class UserService {
     async cadastrar(data: UserCreateDto): Promise<ResultDto> {
         const user = new User();
         user.name = data.name;
+        user.password = data.password || null;
+        user.type = data.type || "user";
         user.email = data.email;
 
         return this.userRepository.save(user)
@@ -30,6 +32,7 @@ export class UserService {
                 return <ResultDto>{
                     status: false,
                     message: "Erro ao criar o usuário!",
+                    result: error
                 }
             });
     }
