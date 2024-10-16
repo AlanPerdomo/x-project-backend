@@ -19,7 +19,7 @@ export class PerolaService {
     async cadastrar(data: PerolaCreateDto): Promise<ResultDto> {
         const perola = new Perola();
         perola.perola = data.perola;
-        perola.date = data.date || '2021-08-12';
+        perola.date = data.date || Date.now().toString();
         perola.user = data.user;
 
         return this.perolaRepository.save(perola).then((result) => {
