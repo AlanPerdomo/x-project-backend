@@ -1,7 +1,9 @@
 export interface UserCreateDto {
     name: string;
-    email: string;
+    discordId: string;
+    username: string;
+    email?: string;
     password?: string;
-    type?: string
+    type?: string;
     
 }

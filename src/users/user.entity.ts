@@ -6,16 +6,22 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({unique: true})
+    discordId: string;
+
     @Column({length: 100})
     name: string;
 
-    @Column({length: 100})
+    @Column({length: 100, nullable: true})
+    username: string;
+
+    @Column({length: 100, nullable: true})
     email: string;
 
-    @Column({length: 100})
-    password: string = null;
+    @Column({length: 100, nullable: true})
+    password: string;
 
-    @Column({length: 100})
+    @Column({length: 100, nullable: true})
     type: string;
 
     @OneToMany(() => Perola, perola => perola.user)

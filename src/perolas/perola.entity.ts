@@ -12,6 +12,12 @@ export class Perola {
     @Column({length: 100})
     date: string;
 
+    @Column({nullable: true})
+    guildId: string ;
+
+    @Column({nullable: true})
+    channelId: string;
+
     @ManyToOne(() => User, user => user.perolas)
     user: User;
 }

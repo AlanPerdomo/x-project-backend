@@ -18,9 +18,11 @@ export class UserService {
     async cadastrar(data: UserCreateDto): Promise<ResultDto> {
         const user = new User();
         user.name = data.name;
-        user.password = data.password || null;
+        user.discordId = data.discordId;
+        user.username = data.username;
+        user.email = data.email || "";
+        user.password = data.password || "";
         user.type = data.type || "user";
-        user.email = data.email;
 
         return this.userRepository.save(user)
         .then((result) => {
