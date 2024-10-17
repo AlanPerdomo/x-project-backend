@@ -6,7 +6,7 @@ import { readFileSync } from 'fs';
 @Injectable()
 export class AppService {
   getHello(response: Response): void {
-    const filePath = join(__dirname, '..', 'public', 'heimer.html');
+    const filePath = join(__dirname, '..', 'public', 'index.html');
     const htmlContent = readFileSync(filePath, 'utf-8');
     response.send(htmlContent);
   }

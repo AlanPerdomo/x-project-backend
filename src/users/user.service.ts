@@ -17,7 +17,7 @@ export class UserService {
     }
 
     async cadastrar(data: UserCreateDto): Promise<ResultDto> {
-       console.log(data.password);
+        // console.log(data);
 
         let user = new User();
         user.name = data.name;
@@ -43,6 +43,7 @@ export class UserService {
     }
 
     async findOne(email: string): Promise<User| undefined> {
-        return this.userRepository.findOne({where: {email: email}});
+        // console.log(email);
+        return this.userRepository.findOne({where:{email: email}});
     }
 }

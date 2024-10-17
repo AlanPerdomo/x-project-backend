@@ -1,14 +1,18 @@
 import { Body, Controller, Get, Post, UseGuards, Request } from '@nestjs/common';
-import { UserService } from './user.service';
-import { User } from './user.entity';
-import { UserCreateDto } from './dto/user.create.dto';
-import { ResultDto } from 'src/dto/result.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ResultDto } from 'src/dto/result.dto';
+import { UserCreateDto } from './dto/user.create.dto';
+import { User } from './user.entity';
+import { UserService } from './user.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
-
+    constructor(
+        private readonly userService: UserService, 
+        private authService: AuthService
+    ) {}
+    @UseGuards(AuthGuard('jwt'))
     @Get('listar')
     async listar(): Promise<User[]> {
         return await this.userService.listar();
@@ -22,6 +26,6 @@ export class UserController {
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Request() req) {
-        return req.user;
+        return this.authService.login(req.user);
     }
 }
