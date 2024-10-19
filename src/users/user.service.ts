@@ -46,4 +46,9 @@ export class UserService {
         // console.log(email);
         return this.userRepository.findOne({where:{email: email}});
     }
+
+    async findByDiscordId(discordId: string): Promise<User| undefined> {
+        // console.log(discordId);
+        return this.userRepository.findOne({where:{discordId: discordId}});
+    }
 }

@@ -3,6 +3,7 @@ import { ResultDto } from "src/dto/result.dto";
 import { Repository } from "typeorm";
 import { Perola } from "./perola.entity";
 import { PerolaCreateDto } from "./dto/perola.create.dto";
+import { UserService } from "src/users/user.service";
 
 
 @Injectable()
@@ -10,6 +11,7 @@ export class PerolaService {
     constructor(
         @Inject("PEROLA_REPOSITORY")
         private perolaRepository: Repository<Perola>,
+        private userService: UserService
     ) {}
 
     async listar(): Promise<Perola[]> {
@@ -18,23 +20,26 @@ export class PerolaService {
 
     async cadastrar(data: PerolaCreateDto): Promise<ResultDto> {
         const perola = new Perola();
+        
+
         perola.perola = data.perola;
         perola.date = data.date || Date.now().toString();
-        perola.user = data.user;
+        perola.user =  !data.userId ? null : await this.userService.findByDiscordId(data.userId.toString());
+        perola.guildId = data.guildId;
+        perola.channelId = data.channelId;
 
-        return this.perolaRepository.save(perola).then((result) => {
+        try{
+            const result = await this.perolaRepository.save(perola);
             return <ResultDto>{
                 status: true,
                 message: "Perola criada com sucesso!",
-                result: result
             }
-        }).catch((error) => {
+        } catch (error) {
             return <ResultDto>{
                 status: false,
                 message: "Erro ao criar a perola!",
                 result: error
             }
-        });
+        }
     }
-   
 }

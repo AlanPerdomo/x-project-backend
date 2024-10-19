@@ -8,7 +8,7 @@ import { UserModule } from "src/users/user.module";
 
 
 @Module({
-    imports: [DatabaseModule, forwardRef(() => AuthModule),UserModule],
+    imports: [DatabaseModule, forwardRef(() => AuthModule), forwardRef(() => UserModule)],
     controllers: [TokenController],
     providers: [...tokenProviders, TokenService],
     exports: [TokenService]
