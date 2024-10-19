@@ -6,6 +6,9 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ default: true})
+    firstAcess: boolean;
+
     @Column({unique: true})
     discordId: string;
 

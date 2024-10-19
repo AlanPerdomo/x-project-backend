@@ -21,12 +21,23 @@ export class UserService {
 
         let user = new User();
         user.name = data.name;
-        user.discordId = data.discordId;
+        user.discordId = data.discordId || "";
         user.username = data.username;
         user.email = data.email || "";
-        user.password = bcrypt.hashSync(data.password, 10);
+        user.password = data.password ? bcrypt.hashSync(data.password, 10): "";
         user.type = data.type || "user";
 
+        // console.log(user);
+        // console.log(await this.findByDiscordId(data.discordId));
+
+        if ( await this.findByDiscordId(data.discordId) && user.discordId != "") {
+            return <ResultDto>{
+                status: false,
+                message: "Usuário já existe!",
+                result: null
+            }
+        }
+    
         return this.userRepository.save(user)
         .then((result) => {
             return <ResultDto>{
@@ -43,7 +54,7 @@ export class UserService {
     }
 
     async findOne(email: string): Promise<User| undefined> {
-        // console.log(email);
+        console.log(email);
         return this.userRepository.findOne({where:{email: email}});
     }
 

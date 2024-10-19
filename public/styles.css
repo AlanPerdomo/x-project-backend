@@ -40,3 +40,47 @@ footer{
     bottom: 0;
     width: 100%;
 }
+.auth-buttons{
+    margin-top: 10px;
+}
+.login-button{
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+.login-button:hover{
+    background-color: #45a049;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    margin: 0 auto;
+}
+input{
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+button{
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover{
+    background-color: #45a049;
+}
+#toggle-form{
+    text-align: center;
+    margin-top: 10px;
+}
