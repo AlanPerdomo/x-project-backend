@@ -1,21 +1,20 @@
-
-
-async function cadastrar(data){
+async function login(data){
     return await axios({
-        url: `${apiUrl}/user/login`,
+        url: `http://localhost:3000/user/login`,
         method: 'post',
         data: data,
         timeout: 5000,
         headers:{Accept: 'application/json'}
     }).then((response) => {
-        return Promise.resolve(response.data);
+        return Promise.resolve(response.data.access_token);
     })
     .catch((error) => {
         return Promise.reject(error);
     });
 }
 
-function toggleForms() {
+async function toggleForms() {
+
     const loginSection = document.getElementById('login-section');
     const registerSection = document.getElementById('register-section');
     const toggleText = document.getElementById('toggle-form');
@@ -34,16 +33,22 @@ function toggleForms() {
 document.getElementById('login-form').addEventListener('submit', async function(event) {
     event.preventDefault();
 
-    const email = document.getElementById('register-email').value;
+    const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
     let data = {
         email: email,
         password: password
     }
-    alert(data);
-    token = await cadastrar(data);   
-    console.log(token)
+    const token = await login(data);
+    
+    if (token) {
+        localStorage.setItem('token', token);
+        window.location.href = 'index.html';
+    } else {
+        alert('Erro ao realizar login.');
+    }
+
 });
 
 // document.getElementById('register-form').addEventListener('submit', async function(event) {

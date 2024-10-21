@@ -17,6 +17,7 @@ import { TokenModule } from './token/token.module';
     DatabaseModule, 
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
+      exclude: ['/api*'],      
     }),
     AuthModule,],
   controllers: [AppController],

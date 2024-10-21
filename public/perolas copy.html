@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Itens</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Lista de Itens</h1>
+        <button onclick="logout()">Sair</button>
+    </header>
+    <main>
+        <ul id="item-list">
+            <!-- Os itens serão exibidos aqui -->
+        </ul>
+    </main>
+
+    <script>
+        async function fetchItems() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const response = await axios.get('http://localhost:3000/perolas/listar', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                displayItems(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar os itens:', error);
+                alert('Erro ao buscar os itens. Por favor, faça login novamente.');
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Função para exibir os itens na página
+        function displayItems(items) {
+            const itemList = document.getElementById('item-list');
+            itemList.innerHTML = ''; // Limpar a lista existente
+
+            items.forEach(item => {
+                const listItem = document.createElement('li');
+                const date = new Date(parseInt(item.date)).toLocaleString(); // Converter o timestamp para uma data legível
+
+                listItem.textContent = `"${item.perola}" - ${date}`;
+                itemList.appendChild(listItem);
+            });
+        }
+
+        // Função para sair e limpar o token
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Chamar a função para buscar os itens quando a página carregar
+        window.onload = fetchItems;
+    </script>
+</body>
+</html>

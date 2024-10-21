@@ -6,7 +6,7 @@ export class Perola {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({length: 100})
+    @Column({nullable: true})
     perola: string;
 
     @Column({length: 100})
