@@ -20,16 +20,25 @@ export class PerolaService {
 
     async cadastrar(data: PerolaCreateDto): Promise<ResultDto> {
         const perola = new Perola();
-        
+
+        if(!await this.userService.findByDiscordId(data.userId.toString()) 
+            && data.userId && data.username && data.name) {
+            await this.userService.cadastrar({
+                    discordId: data.userId,
+                    name: data.name,
+                    username: data.username,
+                }
+            );
+        }
 
         perola.perola = data.perola;
-        perola.date = data.date || Date.now().toString();
-        perola.user =  !data.userId ? null : await this.userService.findByDiscordId(data.userId.toString());
-        perola.guildId = data.guildId;
-        perola.channelId = data.channelId;
+        perola.date = data.date ? data.date : Date.now().toString();
+        perola.user =  data.userId ? await this.userService.findByDiscordId(data.userId.toString()) : null;
+        perola.guildId = data.guildId ? data.guildId : null;
+        perola.channelId = data.channelId ? data.channelId : null;
 
         try{
-            const result = await this.perolaRepository.save(perola);
+            await this.perolaRepository.save(perola);
             return <ResultDto>{
                 status: true,
                 message: "Perola criada com sucesso!",

@@ -17,49 +17,66 @@ export class UserService {
     }
 
     async cadastrar(data: UserCreateDto): Promise<ResultDto> {
-        // console.log(data);
-
+    
         let user = new User();
         user.name = data.name;
-        user.discordId = data.discordId || "";
-        user.username = data.username;
-        user.email = data.email || "";
-        user.password = data.password ? bcrypt.hashSync(data.password, 10): "";
-        user.type = data.type || "user";
+        user.discordId = data.discordId;
+        user.username = data.username ? data.username : null;
+        user.email = data.email ? data.email : null;
+        user.password = data.password ? bcrypt.hashSync(data.password, 10): null;
+        user.type = data.type ? data.type : null;
 
-        // console.log(user);
-        // console.log(await this.findByDiscordId(data.discordId));
-
-        if ( await this.findByDiscordId(data.discordId) && user.discordId != "") {
-            return <ResultDto>{
-                status: false,
-                message: "Usuário já existe!",
-                result: null
-            }
-        }
-    
-        return this.userRepository.save(user)
-        .then((result) => {
-            return <ResultDto>{
-                status: true,
-                message: "Usuário criado com sucesso!",
-                result: result
-            }}).catch((error) => {
+        if(await this.findByDiscordId(data.discordId) && user.discordId != "") {
+            try {
+                if (!await this.findByEmail(data.email)) {
+                    return await this.userRepository.update({discordId: data.discordId}, user).then((result) => {
+                        //console.log(this.findByDiscordId(data.discordId))
+                        return <ResultDto>{
+                            status: true,
+                            message: "Usuário atualizado com sucesso!",
+                            result: result
+                        } 
+                    })   
+                } else {
+                    return <ResultDto>{
+                        status: false,
+                        message: "usuario ja existente!",
+                        result: null
+                    }
+                }
+            } catch (error) {
                 return <ResultDto>{
                     status: false,
-                    message: "Erro ao criar o usuário!",
+                    message: "Erro ao atualizar o usuário!",
                     result: error
                 }
-            });
-    }
-
+            }
+        }else {
+            return this.userRepository.save(user)
+            .then((result) => {
+                console.log("result", result)
+                return <ResultDto>{
+                    status: true,
+                    message: "Usuário criado com sucesso!",
+                }}).catch((error) => {
+                    return <ResultDto>{
+                        status: false,
+                        message: "Erro ao criar o usuário!",
+                        result: error
+                    }
+                });
+            }
+        }   
+            
     async findOne(email: string): Promise<User| undefined> {
-        console.log(email);
         return this.userRepository.findOne({where:{email: email}});
     }
 
     async findByDiscordId(discordId: string): Promise<User| undefined> {
-        // console.log(discordId);
         return this.userRepository.findOne({where:{discordId: discordId}});
+    }
+
+    async findByEmail(email: string): Promise<User| undefined> {
+        return this.userRepository.findOne({where:{email: email}});
     }
 }

@@ -12,10 +12,10 @@ export class User {
     @Column({unique: true})
     discordId: string;
 
-    @Column({length: 100})
+    @Column({length: 100, nullable: true})
     name: string;
 
-    @Column({length: 100, nullable: true})
+    @Column({length: 100})
     username: string;
 
     @Column({length: 100, nullable: true})

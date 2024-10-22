@@ -6,4 +6,7 @@ export interface PerolaCreateDto {
     userId?: string;
     guildId?: string;
     channelId?: string;
+    username?: string;
+    name?: string;
+    
 }
