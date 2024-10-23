@@ -12,4 +12,11 @@ export class TokenController {
     async refreshToken(@Body() data: RefreshTokenDto){
         return this.tokenService.refreshToken(data.oldToken)
     }
+
+    // @Put("delete")
+    // async deleteToken(@Body() data: RefreshTokenDto){
+    //     return this.tokenService.deleteByHash(data.oldToken)
+    // }
+
+
 }

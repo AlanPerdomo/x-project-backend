@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, Request, Delete, Put } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ResultDto } from 'src/dto/result.dto';
 import { UserCreateDto } from './dto/user.create.dto';
@@ -23,9 +23,28 @@ export class UserController {
         return this.userService.cadastrar(data);
     }
 
+    // @UseGuards(AuthGuard('jwt'))
+    // @Put('updatePassword')
+    // async updatePassword(@Request() req, @Body() password: string): Promise<User> {
+    //     return this.userService.updatePassword(req.user, password);
+    // }
+
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Request() req) {
         return this.authService.login(req.user);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Delete('logout')
+    async logout(@Request() req) {
+        console.log(req.user);
+        return this.authService.logout(req.user);
+    }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Get('me')
+    async me(@Request() req) {
+        return req.user;
     }
 }

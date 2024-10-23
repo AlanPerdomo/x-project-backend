@@ -1,5 +1,6 @@
 import { Perola } from "src/perolas/perola.entity";
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Token } from "src/token/token.entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
 
 @Entity()
 export class User {
@@ -29,4 +30,7 @@ export class User {
 
     @OneToMany(() => Perola, perola => perola.user)
     perolas: Perola[]
+
+    @OneToOne(() => Token, token => token.user)
+    token: Token
 }

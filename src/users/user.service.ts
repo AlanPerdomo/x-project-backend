@@ -30,7 +30,6 @@ export class UserService {
             try {
                 if (!await this.findByEmail(data.email)) {
                     return await this.userRepository.update({discordId: data.discordId}, user).then((result) => {
-                        //console.log(this.findByDiscordId(data.discordId))
                         return <ResultDto>{
                             status: true,
                             message: "Usuário atualizado com sucesso!",
@@ -79,4 +78,10 @@ export class UserService {
     async findByEmail(email: string): Promise<User| undefined> {
         return this.userRepository.findOne({where:{email: email}});
     }
+
+    async updatePassword(user: User, password: string): Promise<User> {
+        user.password = bcrypt.hashSync(password, 10);
+        return this.userRepository.save(user);
+    }
+
 }
