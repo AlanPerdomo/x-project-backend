@@ -23,22 +23,24 @@ export class UserController {
         return this.userService.cadastrar(data);
     }
 
-    // @UseGuards(AuthGuard('jwt'))
-    // @Put('updatePassword')
-    // async updatePassword(@Request() req, @Body() password: string): Promise<User> {
-    //     return this.userService.updatePassword(req.user, password);
-    // }
+    @UseGuards(AuthGuard('jwt'))
+    @Post('update-password')
+    async updatePassword(@Request() req, @Body() data: UserCreateDto): Promise<ResultDto> {
+        console.log(req.user);
+        return this.userService.updatePassword(req.user, data.password);
+    }
 
     @UseGuards(AuthGuard('local'))
     @Post('login')
     async login(@Request() req) {
+        console.log("login");
         return this.authService.login(req.user);
     }
 
     @UseGuards(AuthGuard('jwt'))
     @Delete('logout')
     async logout(@Request() req) {
-        console.log(req.user);
+        console.log("Logout");
         return this.authService.logout(req.user);
     }
 

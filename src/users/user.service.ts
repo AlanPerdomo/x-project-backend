@@ -4,12 +4,16 @@ import { User } from "./user.entity";
 import { UserCreateDto } from "./dto/user.create.dto";
 import { ResultDto } from "src/dto/result.dto";
 import * as bcrypt from 'bcrypt';
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
+    
+    
     constructor(
         @Inject("USER_REPOSITORY")
         private userRepository: Repository<User>,
+        private jwtService: JwtService,
     ){}
 
     async listar(): Promise<User[]> {
@@ -79,9 +83,35 @@ export class UserService {
         return this.userRepository.findOne({where:{email: email}});
     }
 
-    async updatePassword(user: User, password: string): Promise<User> {
-        user.password = bcrypt.hashSync(password, 10);
-        return this.userRepository.save(user);
+    async findById(id: number): Promise<User| undefined> {
+        return this.userRepository.findOne({where:{id: id}});
     }
 
-}
+    async getEmail(id: number): Promise<string> {
+        return (await this.userRepository.findOne({where:{id: id}})).email;
+    }
+
+    async updatePassword(user: User, password: string): Promise<ResultDto> {
+
+        user.password = bcrypt.hashSync(password, 10);
+        // user.email = await this.getEmail(user.id);
+        // console.log(user)
+        return await this.userRepository.update({id: user.id}, user)
+        .then(async (result) => {
+            return <ResultDto>{
+                status: true,
+                message: "Senha atualizada com sucesso!",
+            }}).catch((error) => {
+                return <ResultDto>{
+                    status: false,
+                    message: "Erro ao atualizar a senha!",
+                    result: error
+                }
+            });        
+    }        
+}  
+
+    
+        
+    
+   
