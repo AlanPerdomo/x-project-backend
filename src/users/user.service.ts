@@ -94,8 +94,6 @@ export class UserService {
     async updatePassword(user: User, password: string): Promise<ResultDto> {
 
         user.password = bcrypt.hashSync(password, 10);
-        // user.email = await this.getEmail(user.id);
-        // console.log(user)
         return await this.userRepository.update({id: user.id}, user)
         .then(async (result) => {
             return <ResultDto>{
