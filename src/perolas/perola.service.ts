@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { Perola } from "./perola.entity";
 import { PerolaCreateDto } from "./dto/perola.create.dto";
 import { UserService } from "src/users/user.service";
+import { LogService } from "src/log/log.service";
 
 
 @Injectable()
@@ -11,7 +12,8 @@ export class PerolaService {
     constructor(
         @Inject("PEROLA_REPOSITORY")
         private perolaRepository: Repository<Perola>,
-        private userService: UserService
+        private userService: UserService,
+        private logService: LogService
     ) {}
 
     async listar(): Promise<Perola[]> {
@@ -19,6 +21,8 @@ export class PerolaService {
     }
 
     async cadastrar(data: PerolaCreateDto): Promise<ResultDto> {
+        await this.logService.cadastrar(data);
+
         const perola = new Perola();
 
         if(!await this.userService.findByDiscordId(data.userId.toString()) 

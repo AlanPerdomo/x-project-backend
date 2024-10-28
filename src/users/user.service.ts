@@ -4,16 +4,12 @@ import { User } from "./user.entity";
 import { UserCreateDto } from "./dto/user.create.dto";
 import { ResultDto } from "src/dto/result.dto";
 import * as bcrypt from 'bcrypt';
-import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService {
-    
-    
     constructor(
         @Inject("USER_REPOSITORY")
         private userRepository: Repository<User>,
-        private jwtService: JwtService,
     ){}
 
     async listar(): Promise<User[]> {
@@ -21,7 +17,9 @@ export class UserService {
     }
 
     async cadastrar(data: UserCreateDto): Promise<ResultDto> {
-    
+        
+        let date = new Date();
+
         let user = new User();
         user.name = data.name;
         user.discordId = data.discordId;
@@ -29,7 +27,9 @@ export class UserService {
         user.email = data.email ? data.email : null;
         user.password = data.password ? bcrypt.hashSync(data.password, 10): null;
         user.type = data.type ? data.type : null;
-
+        user.updatedAt = date;
+        
+        
         if(await this.findByDiscordId(data.discordId) && user.discordId != "") {
             try {
                 if (!await this.findByEmail(data.email)) {
@@ -55,6 +55,7 @@ export class UserService {
                 }
             }
         }else {
+            user.createdAt = date;
             return this.userRepository.save(user)
             .then((result) => {
                 console.log("result", result)
@@ -62,6 +63,7 @@ export class UserService {
                     status: true,
                     message: "Usuário criado com sucesso!",
                 }}).catch((error) => {
+                    console.log("error", error)
                     return <ResultDto>{
                         status: false,
                         message: "Erro ao criar o usuário!",

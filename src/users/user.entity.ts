@@ -1,3 +1,4 @@
+import { Log } from "src/log/log.entity";
 import { Perola } from "src/perolas/perola.entity";
 import { Token } from "src/token/token.entity";
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
@@ -28,8 +29,17 @@ export class User {
     @Column({length: 100, nullable: true})
     type: string;
 
+    @Column({default: new Date})
+    createdAt: Date;
+
+    @Column()
+    updatedAt: Date;
+
     @OneToMany(() => Perola, perola => perola.user)
     perolas: Perola[]
+
+    @OneToMany(() => Log, log => log.user)
+    logs: Log[]
 
     @OneToOne(() => Token, token => token.user)
     token: Token

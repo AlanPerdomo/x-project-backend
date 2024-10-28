@@ -5,5 +5,7 @@ export interface UserCreateDto {
     email?: string;
     password?: string;
     type?: string;
-    
+    firstAcess?: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
