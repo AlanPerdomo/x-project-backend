@@ -1,4 +1,3 @@
-
 export interface RefreshTokenDto {
-    oldToken: string
+  oldToken: string;
 }

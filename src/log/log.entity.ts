@@ -1,17 +1,17 @@
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
-import { User } from "src/users/user.entity";
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { User } from 'src/users/user.entity';
 
 @Entity('log')
 export class Log {
-    @PrimaryColumn()
-    id: number
+  @PrimaryColumn()
+  id: number;
 
-    @Column()
-    logMessage: string
+  @Column()
+  logMessage: string;
 
-    @Column()
-    logDate: Date
+  @Column()
+  logDate: Date;
 
-    @ManyToOne(() => User, user => user.logs)
-    user: User;
+  @ManyToOne(() => User, user => user.logs)
+  user: User;
 }

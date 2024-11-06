@@ -1,5 +1,5 @@
-import { User } from 'src/users/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from 'src/users/user.entity';
 
 @Entity()
 export class Perola {
@@ -17,6 +17,9 @@ export class Perola {
 
   @Column({ nullable: true })
   channelId: string;
+
+  @Column({ nullable: true })
+  createdAt: Date;
 
   @ManyToOne(() => User, user => user.perolas)
   user: User;
