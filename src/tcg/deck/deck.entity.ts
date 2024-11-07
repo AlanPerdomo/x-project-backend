@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from 'src/users/user.entity';
-import { Card } from 'src/tcg/card.entity';
+import { Card } from 'src/tcg/card/card.entity';
 
 @Entity()
 export class Deck {

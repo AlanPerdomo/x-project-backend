@@ -5,12 +5,14 @@ import { UserCreateDto } from './dto/user.create.dto';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 import { AuthService } from 'src/auth/auth.service';
+import { LogService } from 'src/log/log.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private authService: AuthService,
+    private readonly LogService: LogService,
   ) {}
   @UseGuards(AuthGuard('jwt'))
   @Get('listar')
@@ -20,27 +22,48 @@ export class UserController {
 
   @Post('cadastrar')
   async cadastrar(@Body() data: UserCreateDto): Promise<ResultDto> {
+    await this.LogService.cadastrar({
+      logMessage: 'cadastrou o user ' + data.name,
+      user: await this.userService.findByDiscordId(data.discordId),
+      logDate: new Date(),
+      logType: 'user Create',
+    });
     return this.userService.cadastrar(data);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('update-password')
   async updatePassword(@Request() req, @Body() data: UserCreateDto): Promise<ResultDto> {
-    console.log(req);
+    await this.LogService.cadastrar({
+      logMessage: 'atualizou a senha do user ' + req.user.id,
+      user: req.user,
+      logDate: new Date(),
+      logType: 'user Update',
+    });
     return this.userService.updatePassword(req.user, data.password);
   }
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req) {
-    console.log('login');
+    await this.LogService.cadastrar({
+      logMessage: 'logou o user ' + req.user.id,
+      user: req.user,
+      logDate: new Date(),
+      logType: 'user Login',
+    });
     return this.authService.login(req.user);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete('logout')
   async logout(@Request() req) {
-    console.log('Logout');
+    await this.LogService.cadastrar({
+      logMessage: 'deslogou o user ' + req.user.id,
+      user: req.user,
+      logDate: new Date(),
+      logType: 'user Logout',
+    });
     return this.authService.logout(req.user);
   }
 

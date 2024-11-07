@@ -1,7 +1,7 @@
 import { Log } from 'src/log/log.entity';
 import { Perola } from 'src/perolas/perola.entity';
 import { Token } from 'src/token/token.entity';
-import { Deck } from 'src/tcg/deck.entity';
+import { Deck } from 'src/tcg/deck/deck.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from 'typeorm';
 
 @Entity()

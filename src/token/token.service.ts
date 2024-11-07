@@ -41,19 +41,13 @@ export class TokenService {
 
   async deleteByHash(hash: string) {
     const objToken = await this.tokenRepository.findOne({ where: { hash: hash } });
-    console.log(objToken);
+    // console.log(objToken);
     if (objToken) {
       this.tokenRepository.delete({ id: objToken.id });
-      console.log('Token deletado!');
+      console.log('\nToken deletado!');
       return {
         status: true,
         message: 'Usuario deslogado com sucesso!',
-      };
-    } else {
-      console.log('Token inválido!');
-      return {
-        success: false,
-        message: 'Token inválido!',
       };
     }
   }
