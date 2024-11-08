@@ -26,7 +26,7 @@ export class UserController {
       logMessage: 'cadastrou o user ' + data.name,
       user: await this.userService.findByDiscordId(data.discordId),
       logDate: new Date(),
-      logType: 'user Create',
+      logType: 'user',
     });
     return this.userService.cadastrar(data);
   }
@@ -38,7 +38,7 @@ export class UserController {
       logMessage: 'atualizou a senha do user ' + req.user.id,
       user: req.user,
       logDate: new Date(),
-      logType: 'user Update',
+      logType: 'user',
     });
     return this.userService.updatePassword(req.user, data.password);
   }
@@ -50,7 +50,7 @@ export class UserController {
       logMessage: 'logou o user ' + req.user.id,
       user: req.user,
       logDate: new Date(),
-      logType: 'user Login',
+      logType: 'user',
     });
     return this.authService.login(req.user);
   }
@@ -62,7 +62,7 @@ export class UserController {
       logMessage: 'deslogou o user ' + req.user.id,
       user: req.user,
       logDate: new Date(),
-      logType: 'user Logout',
+      logType: 'user',
     });
     return this.authService.logout(req.user);
   }

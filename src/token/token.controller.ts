@@ -1,4 +1,4 @@
-import { Body, Controller, Put } from '@nestjs/common';
+import { Body, Controller, Post, Put } from '@nestjs/common';
 import { RefreshTokenDto } from './dto/refresh.token.dto';
 import { TokenService } from './token.service';
 
@@ -11,8 +11,8 @@ export class TokenController {
     return this.tokenService.refreshToken(data.oldToken);
   }
 
-  // @Put("delete")
-  // async deleteToken(@Body() data: RefreshTokenDto){
-  //     return this.tokenService.deleteByHash(data.oldToken)
-  // }
+  @Post('mytoken')
+  async myToken(@Body() data: any) {
+    return this.tokenService.findOne(data);
+  }
 }

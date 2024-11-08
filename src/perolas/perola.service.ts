@@ -20,7 +20,6 @@ export class PerolaService {
   async sorte(): Promise<Perola> {
     const perolas = await this.perolaRepository.find();
     const index = Math.floor(Math.random() * perolas.length);
-    console.log(perolas[index]);
     return perolas[index];
   }
 

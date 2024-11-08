@@ -1,7 +1,6 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Token } from './token.entity';
-import { UserService } from 'src/users/user.service';
 import { AuthService } from 'src/auth/auth.service';
 import { User } from 'src/users/user.entity';
 
@@ -10,7 +9,6 @@ export class TokenService {
   constructor(
     @Inject('TOKEN_REPOSITORY')
     private tokenRepository: Repository<Token>,
-    private userService: UserService,
     @Inject(forwardRef(() => AuthService))
     private authService: AuthService,
   ) {}
@@ -37,6 +35,10 @@ export class TokenService {
         HttpStatus.UNAUTHORIZED,
       );
     }
+  }
+
+  async findOne(data) {
+    console.log(data);
   }
 
   async deleteByHash(hash: string) {
