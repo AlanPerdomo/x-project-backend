@@ -17,6 +17,13 @@ export class PerolaService {
     return await this.perolaRepository.find();
   }
 
+  async sorte(): Promise<Perola> {
+    const perolas = await this.perolaRepository.find();
+    const index = Math.floor(Math.random() * perolas.length);
+    console.log(perolas[index]);
+    return perolas[index];
+  }
+
   async cadastrar(data: PerolaCreateDto): Promise<ResultDto> {
     const perola = new Perola();
 

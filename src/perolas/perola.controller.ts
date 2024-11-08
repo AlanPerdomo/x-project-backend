@@ -18,6 +18,11 @@ export class PerolaController {
     return await this.perolaService.listar();
   }
 
+  @Get('sorte')
+  async sorte(): Promise<Perola> {
+    return await this.perolaService.sorte();
+  }
+
   @Post('cadastrar')
   async cadastrar(@Body() data: PerolaCreateDto): Promise<ResultDto> {
     await this.LogService.cadastrar({
