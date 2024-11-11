@@ -4,6 +4,7 @@ import { Deck } from './deck.entity';
 import { DeckCreateDto } from './dto/deck.create.dto';
 import { ResultDto } from 'src/dto/result.dto';
 import { UserService } from 'src/users/user.service';
+import { CardService } from '../card/card.service';
 
 @Injectable()
 export class DeckService {
@@ -11,6 +12,7 @@ export class DeckService {
     @Inject('DECK_REPOSITORY')
     private deckRepository: Repository<Deck>,
     private userService: UserService,
+    private cardService: CardService,
   ) {}
 
   async myDecks(userId: number) {
@@ -38,6 +40,9 @@ export class DeckService {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async addRandomCard(_data: any) {}
+
   async cadastrar(data: DeckCreateDto): Promise<ResultDto> {
     if (!(await this.userService.findByDiscordId(data.user))) {
       return <ResultDto>{
@@ -49,6 +54,6 @@ export class DeckService {
   }
 
   async findByUserId(userId: number): Promise<Deck[]> {
-    return this.deckRepository.find({ where: { user: { id: userId } } });
+    return await this.deckRepository.find({ where: { user: { id: userId } }, relations: ['card'] });
   }
 }

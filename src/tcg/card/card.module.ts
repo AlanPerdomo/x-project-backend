@@ -6,9 +6,16 @@ import { CardService } from './card.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/users/user.module';
 import { LogModule } from 'src/log/log.module';
+import { DeckModule } from '../deck/deck.module';
 
 @Module({
-  imports: [DatabaseModule, forwardRef(() => AuthModule), forwardRef(() => UserModule), LogModule],
+  imports: [
+    DatabaseModule,
+    forwardRef(() => AuthModule),
+    forwardRef(() => UserModule),
+    LogModule,
+    forwardRef(() => DeckModule),
+  ],
   controllers: [CardController],
   providers: [...cardProviders, CardService],
   exports: [CardService],
