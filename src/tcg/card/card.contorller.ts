@@ -18,7 +18,7 @@ export class CardController {
   async cardsList() {
     return await this.cardService.cardsList();
   }
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Post('create-card')
   async createCard(@Request() req, @Body() data: CardCreateDto): Promise<ResultDto> {
     await this.LogService.cadastrar({
@@ -27,6 +27,10 @@ export class CardController {
       logType: 'perola',
       user: await this.userService.findById(req.user.id),
     });
-    return await this.cardService.createCard(data);
+    if (req.user.role == 'admin') {
+      return await this.cardService.createCard(data);
+    } else {
+      return <ResultDto>{ status: false, message: 'Voce nao tem permissao' };
+    }
   }
 }
