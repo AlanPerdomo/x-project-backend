@@ -40,8 +40,42 @@ export class DeckService {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async addRandomCard(_data: any) {}
+  async addRandomCard(userId: number) {
+    const user = await this.userService.findById(userId);
+    const card = await this.cardService.getRandomCard();
+
+    try {
+      const existingCardInDeck = await this.deckRepository.findOne({
+        where: { user: { id: userId }, card: { id: card.id } },
+      });
+
+      if (existingCardInDeck) {
+        existingCardInDeck.quantity += 1;
+        await this.deckRepository.save(existingCardInDeck);
+      } else {
+        await this.deckRepository.save({
+          id: null,
+          quantity: 1,
+          user: user,
+          card: card,
+          created_at: new Date(),
+        });
+      }
+
+      return <ResultDto>{
+        status: true,
+        message: 'Carta adicionada ao deck',
+        result: card,
+      };
+    } catch (error) {
+      console.log(error);
+      return <ResultDto>{
+        status: false,
+        message: 'Ocorreu um erro ao adicionar a carta ao deck',
+        result: error,
+      };
+    }
+  }
 
   async cadastrar(data: DeckCreateDto): Promise<ResultDto> {
     if (!(await this.userService.findByDiscordId(data.user))) {

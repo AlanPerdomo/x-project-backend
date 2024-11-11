@@ -27,6 +27,22 @@ export class CardService {
     return await this.cardRepository.count();
   }
 
+  async getRandomCard() {
+    const cards = await this.cardsList();
+    const totalWeight = cards.reduce((total, card) => total + 1 / card.rarity, 0);
+    let random = Math.random() * totalWeight;
+
+    for (const card of cards) {
+      const weight = 1 / card.rarity;
+      if (random < weight) {
+        return card;
+      }
+      random -= weight;
+    }
+
+    return cards[0];
+  }
+
   async createCard(data: CardCreateDto, userID: number): Promise<ResultDto> {
     const user = await this.userService.findById(userID);
     const card = new Card();
