@@ -6,4 +6,5 @@ export interface PerolaCreateDto {
   channelId?: string;
   username?: string;
   name?: string;
+  createdAt?: Date;
 }

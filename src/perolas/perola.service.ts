@@ -44,6 +44,7 @@ export class PerolaService {
     perola.user = data.userId ? await this.userService.findByDiscordId(data.userId.toString()) : null;
     perola.guildId = data.guildId ? data.guildId : null;
     perola.channelId = data.channelId ? data.channelId : null;
+    perola.createdAt = new Date();
 
     try {
       await this.perolaRepository.save(perola);
