@@ -1,4 +1,4 @@
-import { Body, Request, Controller, Get, Post, UseGuards, Param } from '@nestjs/common';
+import { Body, Request, Controller, Get, Post, UseGuards, Param, Delete } from '@nestjs/common';
 import { CardService } from './card.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CardCreateDto } from './dto/card.crate.dto';
@@ -22,5 +22,17 @@ export class CardController {
   @Post('create-card')
   async createCard(@Request() req, @Body() data: CardCreateDto): Promise<ResultDto> {
     return await this.cardService.createCard(data, req.user.id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('card/:id')
+  async deleteCard(@Request() req, @Param('id') id: number): Promise<ResultDto> {
+    return await this.cardService.deleteCard(id, req.user.id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('create-multiple-cards')
+  async createMultipleCards(@Request() req, @Body() data: CardCreateDto[]): Promise<ResultDto> {
+    return await this.cardService.createMultipleCards(data, req.user.id);
   }
 }

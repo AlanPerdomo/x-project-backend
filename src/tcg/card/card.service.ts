@@ -54,6 +54,7 @@ export class CardService {
     card.hp = data.hp;
     card.rarity = data.rarity;
     card.special_ability = data.special_ability;
+    card.created_at = new Date();
 
     if (user.type != 'admin') {
       return <ResultDto>{
@@ -86,13 +87,73 @@ export class CardService {
       return <ResultDto>{
         status: true,
         message: 'carta criada com sucesso',
-        result: null,
+        result: card,
       };
     } catch (error) {
       console.log(error);
       return <ResultDto>{
         status: false,
         message: 'erro ao criar carta',
+        result: null,
+      };
+    }
+  }
+
+  async deleteCard(id: number, userID: number): Promise<ResultDto> {
+    const user = await this.userService.findById(userID);
+    if (user.type != 'admin') {
+      return <ResultDto>{
+        status: false,
+        message: 'usuário sem permissão',
+        result: null,
+      };
+    }
+    try {
+      await this.cardRepository.delete(id);
+      await this.LogService.cadastrar({
+        logDate: new Date(),
+        logMessage: 'deletou a carta ' + id,
+        logType: 'perola',
+        user: user,
+      });
+      return <ResultDto>{
+        status: true,
+        message: 'carta deletada com sucesso',
+        result: null,
+      };
+    } catch (error) {
+      console.log(error);
+      return <ResultDto>{
+        status: false,
+        message: 'erro ao deletar carta',
+        result: null,
+      };
+    }
+  }
+
+  async createMultipleCards(data: CardCreateDto[], userID: number): Promise<ResultDto> {
+    const user = await this.userService.findById(userID);
+    if (user.type != 'admin') {
+      return <ResultDto>{
+        status: false,
+        message: 'usuário sem permissão',
+        result: null,
+      };
+    }
+    try {
+      for (const card of data) {
+        await this.createCard(card, userID);
+      }
+      return <ResultDto>{
+        status: true,
+        message: 'cartas criadas com sucesso',
+        result: null,
+      };
+    } catch (error) {
+      console.log(error);
+      return <ResultDto>{
+        status: false,
+        message: 'erro ao criar cartas',
         result: null,
       };
     }
