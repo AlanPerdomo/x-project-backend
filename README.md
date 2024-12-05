@@ -51,7 +51,6 @@ x-project-backend/
 
 - **GET /perolas/listar** - Retorna a lista de pérolas.
 
-
 ## Contribuições 
 
 Se você quiser contribuir com o projeto, siga estas etapas:
@@ -61,6 +60,10 @@ Se você quiser contribuir com o projeto, siga estas etapas:
 	3.	Faça commit das suas alterações (git commit -m 'Adicionei uma nova feature').
 	4.	Envie para o repositório original (git push origin minha-feature).
 	5.	Abra uma Pull Request para revisão.
+
+## Informações Adicionais
+
+Compativel com Node 18.
 
 ## Licença
 
