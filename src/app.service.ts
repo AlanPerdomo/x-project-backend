@@ -12,6 +12,6 @@ export class AppService {
   }
 
   getHello1(): string {
-    return ('Hello World1!');
+    return 'Hello World1!';
   }
 }

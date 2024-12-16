@@ -22,7 +22,7 @@
     <script>
         async function fetchItems() {
             try {
-                const response = await axios.get('https://2d0e-2804-3d28-45-68c6-3e75-4af5-270a-fc76.ngrok-free.app/perolas/listar', {
+                const response = await axios.get('http://localhost:3000/perolas/listar', {
                 });
                 displayItems(response.data);
             } catch (error) {
